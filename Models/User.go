@@ -1,29 +1,43 @@
 package Models
 
 import (
-	"logins/Config"
+	"log"
+	Database "logins/Database"
 )
 
 // GetAllUsers Fetch all User data
 func GetAllUsers(user *[]User) (err error) {
+	db := Database.Init()
+	// if err = Config.DB.Find(user).Error; err != nil {
+	// 	return err
+	// }
+	if err := db.Raw("SELECT id, name, age FROM users").Scan(&user).Error; err != nil {
+		return err
+	}
+	log.Println("User:", user)
+	return nil
+}
 
-	if err = Config.DB.Find(user).Error; err != nil {
+// CreateUser ... Insert New data
+//
+//	if err = Config.DB.Create(user).Error; err != nil {
+//		return err
+//	}
+func CreateUser(user *User) (err error) {
+	db := Database.Init()
+	if err := db.Create(&user).Error; err != nil {
 		return err
 	}
 	return nil
 }
 
-// CreateUser ... Insert New data
-// func CreateUser(user *User) (err error) {
-// 	if err = Config.DB.Create(user).Error; err != nil {
-// 		return err
-// 	}
-// 	return nil
-// }
-
 // GetUserByID ... Fetch only one user by Id
 func GetUserByID(user *User, id string) (err error) {
-	if err = Config.DB.Where("id = ?", id).First(user).Error; err != nil {
+	db := Database.Init()
+	// if err = Config.DB.Where("id = ?", id).First(user).Error; err != nil {
+	// 	return err
+	// }
+	if err := db.Raw("SELECT id, name, age FROM users where id ='" + id + "'").Scan(&user).Error; err != nil {
 		return err
 	}
 	return nil

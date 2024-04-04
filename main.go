@@ -1,8 +1,7 @@
 package main
 
 import (
-	"log"
-	Database "logins/Database"
+	Router "logins/Router"
 )
 
 // var err error
@@ -21,19 +20,22 @@ import (
 //		//running
 //		r.Run()
 //	}
-type User struct {
-	ID   uint
-	Name string
-	Age  uint
-}
+// type User struct {
+// 	ID   uint
+// 	Name string
+// 	Age  uint
+// }
 
 func main() {
-	db := Database.Init()
-	var user User
+	// db := Database.Init()
+	// var user User
 
-	if err := db.Raw("SELECT id, name, age FROM users").Scan(&user).Error; err != nil {
-		log.Fatalln(err)
-	}
+	// if err := db.Raw("SELECT id, name, age FROM users").Scan(&user).Error; err != nil {
+	// 	log.Fatalln(err)
+	// }
 
-	log.Println("User:", user)
+	// log.Println("User:", user)
+	r := Router.SetupRouter()
+	//running
+	r.Run()
 }

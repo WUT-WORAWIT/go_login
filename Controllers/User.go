@@ -1,6 +1,7 @@
 package Controllers
 
 import (
+	"fmt"
 	"logins/Models"
 	"net/http"
 
@@ -8,7 +9,33 @@ import (
 )
 
 // GetUsers ... Get all users
-func GetUsers(c *gin.Context) {
+func GetRemark(c *gin.Context) {
+	str := `
+	func: CreateUser
+	POST(http://localhost:8080/user-api/creatuser)
+	Body -> JSON
+	 {
+	 	"ID": 3,
+	 	"Name": "test2",
+	 	"Age": 19
+	 }
+	 
+	-----------------------------------------------
+	func: GetUsers
+	GET(http://localhost:8080/user-api/getuserall)
+	paramiter:
+
+	-----------------------------------------------
+	func: GetUserByID
+	GET(http://localhost:8080/user-api/getuserbyid?id=1)
+	paramiter:
+	id
+	 `
+	c.String(http.StatusOK, str)
+}
+
+// GetUsers ... Get all users
+func GetUsersAll(c *gin.Context) {
 	var user []Models.User
 	err := Models.GetAllUsers(&user)
 	if err != nil {
@@ -19,21 +46,22 @@ func GetUsers(c *gin.Context) {
 }
 
 // CreateUser ... Create User
-// func CreateUser(c *gin.Context) {
-// 	var user Models.User
-// 	c.BindJSON(&user)
-// 	err := Models.CreateUser(&user)
-// 	if err != nil {
-// 		fmt.Println(err.Error())
-// 		c.AbortWithStatus(http.StatusNotFound)
-// 	} else {
-// 		c.JSON(http.StatusOK, user)
-// 	}
-// }
+func CreateUser(c *gin.Context) {
+	var user Models.User
+	c.BindJSON(&user)
+	err := Models.CreateUser(&user)
+	if err != nil {
+		fmt.Println(err.Error())
+		c.AbortWithStatus(http.StatusNotFound)
+	} else {
+		c.JSON(http.StatusOK, user)
+	}
+}
 
 // GetUserByID ... Get the user by id
 func GetUserByID(c *gin.Context) {
-	id := c.Params.ByName("id")
+	// id := c.Params.ByName("id")
+	id := c.Query("id")
 	var user Models.User
 	err := Models.GetUserByID(&user, id)
 	if err != nil {
