@@ -77,7 +77,11 @@ func GetUserByID(c *gin.Context) {
 	var user Models.User
 	err := Models.GetUserByID(&user, id)
 	if err != nil {
-		c.AbortWithStatus(http.StatusNotFound)
+		errorResponse := gin.H{"status": "error", "message": err.Error()}
+		// ส่ง JSON กลับไปยังผู้ใช้พร้อมกับ HTTP status code 500 Internal Server Error
+		c.JSON(http.StatusInternalServerError, errorResponse)
+		return
+		// c.AbortWithStatus(http.StatusNotFound)
 	} else {
 		c.JSON(http.StatusOK, user)
 	}
@@ -114,7 +118,17 @@ func DeleteUser(c *gin.Context) {
 	err := Models.DeleteUser(&user, id)
 	if err != nil {
 		c.AbortWithStatus(http.StatusNotFound)
-	} else {
-		c.JSON(http.StatusOK, gin.H{"id" + id: "is deleted"})
+		return
 	}
+	// ตรวจสอบว่ามีข้อมูลที่ถูกลบหรือไม่
+	if user.ID == 0 {
+		// หากไม่มีข้อมูลถูกลบ
+		c.JSON(http.StatusNotFound, gin.H{"status": "error", "message": "User with id " + id + " not found"})
+		return
+	}
+	//  else {
+	// 	c.JSON(http.StatusOK, gin.H{"id" + id: "is deleted"})
+	// }
+	// หากข้อมูลถูกลบสำเร็จ
+	c.JSON(http.StatusOK, gin.H{"status": "success", "message": "User with id " + id + " has been deleted"})
 }

@@ -2,34 +2,34 @@ package Models
 
 import (
 	"fmt"
-	Database "logins/Database"
+	Db "logins/Database"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
 // GetAllUsers Fetch all User data
-func GetAllUsers(user *[]User) (err error) {
-	db := Database.Init()
-	if err := db.Raw("SELECT id, name, age FROM users").Scan(&user).Error; err != nil {
+func GetAllUsers(users *[]User) (err error) {
+	db := Db.Init()
+	if err := db.Raw("SELECT id, name, age FROM users").Scan(users).Error; err != nil {
 		return err
 	}
 	return nil
 }
 
 // CreateUser ... Insert New data
-func CreateUser(user *User) (err error) {
-	db := Database.Init()
-	if err := db.Create(&user).Error; err != nil {
+func CreateUser(users *User) (err error) {
+	db := Db.Init()
+	if err := db.Create(&users).Error; err != nil {
 		return err
 	}
 	return nil
 }
 
 // GetUserByID ... Fetch only one user by Id
-func GetUserByID(user *User, id string) (err error) {
-	db := Database.Init()
-	if err := db.Raw("SELECT id, name, age FROM users where id ='" + id + "'").First(&user).Error; err != nil {
+func GetUserByID(users *User, id string) (err error) {
+	db := Db.Init()
+	if err := db.Raw("SELECT id, name, age FROM users where id ='" + id + "'").First(&users).Error; err != nil {
 		return err
 	}
 	return nil
@@ -37,7 +37,7 @@ func GetUserByID(user *User, id string) (err error) {
 
 // UpdateUser ... Update user
 func UpdateUser(c *gin.Context, user *User, id string) (err error) {
-	db := Database.Init()
+	db := Db.Init()
 	fmt.Println(user)
 	// db.Save(user)
 	// ทำการบันทึกข้อมูลผู้ใช้
@@ -57,7 +57,7 @@ func UpdateUser(c *gin.Context, user *User, id string) (err error) {
 
 // DeleteUser ... Delete user
 func DeleteUser(user *User, id string) (err error) {
-	db := Database.Init()
+	db := Db.Init()
 	db.Where("id = ?", id).Delete(user)
 	return nil
 }

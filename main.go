@@ -1,11 +1,11 @@
 package main
 
 import (
-	Router "logins/Router"
+	R "logins/Router"
 )
 
 func main() {
-	r := Router.SetupRouter()
+	r := R.SetupRouter()
 	//running
 	r.Run()
 }
