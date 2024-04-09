@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"golang.org/x/crypto/bcrypt"
 )
 
 // GetUsers ... Get all users
@@ -60,14 +61,29 @@ func GetUsersAll(c *gin.Context) {
 // CreateUser ... Create User
 func CreateUser(c *gin.Context) {
 	var user Models.User
-	c.BindJSON(&user)
-	err := Models.CreateUser(&user)
+	err := c.BindJSON(&user)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "Failed to parse JSON request"})
+		return
+	}
+
+	// Generate hashed password
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), 14)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "Failed to generate hashed password"})
+		return
+	}
+	user.Password = hashedPassword
+
+	// Create user in database
+	err = Models.CreateUser(&user)
 	if err != nil {
 		fmt.Println(err.Error())
-		c.AbortWithStatus(http.StatusNotFound)
-	} else {
-		c.JSON(http.StatusOK, user)
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "Failed to create user"})
+		return
 	}
+
+	c.JSON(http.StatusOK, user)
 }
 
 // GetUserByID ... Get the user by id
@@ -115,20 +131,19 @@ func DeleteUser(c *gin.Context) {
 	var user Models.User
 	// id := c.Params.ByName("id")
 	id := c.Query("id")
-	err := Models.DeleteUser(&user, id)
+
+	err := Models.GetUserByID(&user, id)
+	if err != nil {
+		// ส่ง JSON กลับไปยังผู้ใช้พร้อมกับ HTTP status code 500 Internal Server Error
+		c.JSON(http.StatusNotFound, gin.H{"status": "error", "message": "User with id " + id + " not found"})
+		return
+		// c.JSON(http.StatusNotFound, user)
+	}
+	err = Models.DeleteUser(&user, id)
 	if err != nil {
 		c.AbortWithStatus(http.StatusNotFound)
 		return
 	}
-	// ตรวจสอบว่ามีข้อมูลที่ถูกลบหรือไม่
-	if user.ID == 0 {
-		// หากไม่มีข้อมูลถูกลบ
-		c.JSON(http.StatusNotFound, gin.H{"status": "error", "message": "User with id " + id + " not found"})
-		return
-	}
-	//  else {
-	// 	c.JSON(http.StatusOK, gin.H{"id" + id: "is deleted"})
-	// }
 	// หากข้อมูลถูกลบสำเร็จ
 	c.JSON(http.StatusOK, gin.H{"status": "success", "message": "User with id " + id + " has been deleted"})
 }

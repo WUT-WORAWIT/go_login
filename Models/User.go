@@ -11,7 +11,7 @@ import (
 // GetAllUsers Fetch all User data
 func GetAllUsers(users *[]User) (err error) {
 	db := Db.Init()
-	if err := db.Raw("SELECT id, name, age FROM users").Scan(users).Error; err != nil {
+	if err := db.Raw("SELECT * FROM users").Scan(users).Error; err != nil {
 		return err
 	}
 	return nil
