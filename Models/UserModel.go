@@ -15,10 +15,6 @@ type UserJson struct {
 	Password string `json:"password"`
 }
 
-// type User1 struct {
-// 	Password byte
-// }
-
 // ชื่อตาราง
 func (b *User) TableName() string {
 	return "users"
