@@ -27,9 +27,9 @@ func CreateUser(users *User) (err error) {
 }
 
 // GetUserByID ... Fetch only one user by Id
-func GetUserByID(users *User, id string) (err error) {
+func GetUserByID(users *User, username string) (err error) {
 	db := Db.Init()
-	if err := db.Raw("SELECT id, name, age FROM users where id ='" + id + "'").First(&users).Error; err != nil {
+	if err := db.Raw("SELECT * FROM users where username ='" + username + "'").First(&users).Error; err != nil {
 		return err
 	}
 	return nil

@@ -13,6 +13,7 @@ func SetupRouter() *gin.Engine {
 	{
 		grp1.GET("/", C.GetRemark)
 		grp1.POST("creatuser", C.CreateUser)
+		grp1.POST("login", C.Login)
 		grp1.GET("getuserall", C.GetUsersAll)
 		grp1.GET("getuserbyid", C.GetUserByID)
 		grp1.PUT("updateuser", C.UpdateUser)
