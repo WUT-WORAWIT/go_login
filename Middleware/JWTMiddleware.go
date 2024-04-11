@@ -2,6 +2,7 @@ package Middleware
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/dgrijalva/jwt-go"
@@ -40,6 +41,8 @@ func ExtractClaimsFromJWT(token *jwt.Token) (jwt.MapClaims, bool) {
 
 // Jwtmiddleware เป็น middleware ที่ใช้ในการตรวจสอบ JWT token ใน request header
 func JWTMiddleware() gin.HandlerFunc {
+	// Add Line Numbers to Log Output
+	log.SetFlags(log.LstdFlags | log.Lshortfile)
 	return func(c *gin.Context) {
 		// ตรวจสอบ JWT token ที่ส่งมากับ request
 		tokenString := c.GetHeader("jwt")
@@ -75,7 +78,7 @@ func JWTMiddleware() gin.HandlerFunc {
 			c.Abort()
 			return
 		}
-		fmt.Println(claims)
+		log.Println(claims)
 
 		// ถ้า token ถูกต้อง ส่งต่อไปยัง handler ถัดไป
 		c.Next()
