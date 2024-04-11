@@ -1,4 +1,4 @@
-package JWTmiddleware
+package Middleware
 
 import (
 	"fmt"
@@ -38,11 +38,11 @@ func ExtractClaimsFromJWT(token *jwt.Token) (jwt.MapClaims, bool) {
 	return claims, ok
 }
 
-// JWTMiddleware เป็น middleware ที่ใช้ในการตรวจสอบ JWT token ใน request header
+// Jwtmiddleware เป็น middleware ที่ใช้ในการตรวจสอบ JWT token ใน request header
 func JWTMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		// ตรวจสอบ JWT token ที่ส่งมากับ request
-		tokenString := c.GetHeader("Authorization")
+		tokenString := c.GetHeader("jwt")
 		fmt.Println("tokenString:", tokenString)
 		if tokenString == "" {
 			// ถ้าไม่มี token ส่งมา ส่งคำตอบกลับให้ผู้ใช้ในรูปแบบข้อความข้อผิดพลาด

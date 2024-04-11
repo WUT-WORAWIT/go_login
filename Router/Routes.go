@@ -2,8 +2,8 @@ package Routes
 
 import (
 	C "logins/Controllers"
-	M "logins/JWTmiddleware"
 	L "logins/Login"
+	M "logins/Middleware"
 
 	"github.com/gin-gonic/gin"
 )
@@ -11,14 +11,18 @@ import (
 // SetupRouter ... Configure routes
 func SetupRouter() *gin.Engine {
 	r := gin.Default()
+
+	// Group for endpoints without JWT middleware
 	grppost := r.Group("/user-api")
 	{
 		grppost.GET("/", C.GetRemark)
 		grppost.POST("creatuser", C.CreateUser)
 		grppost.POST("login", L.Login)
 	}
-	grpget := r.Group("/userget")
-	grpget.Use(M.JWTMiddleware()) // เรียกใช้ middleware ที่ทำการตรวจสอบ JWT
+
+	// Group for endpoints with JWT middleware
+	grpget := r.Group("/user-api")
+	grpget.Use(M.JWTMiddleware()) // Applying JWT middleware
 	{
 		grpget.GET("getuserall", C.GetUsersAll)
 		grpget.GET("getuserbyid", C.GetUserByID)

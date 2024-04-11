@@ -2,7 +2,7 @@ package Controllers
 
 import (
 	"fmt"
-	M "logins/JWTmiddleware"
+	M "logins/Middleware"
 	"logins/Models"
 	"net/http"
 
