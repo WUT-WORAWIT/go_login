@@ -1,4 +1,4 @@
-package Login
+package UserLogin
 
 import (
 	"logins/Models"

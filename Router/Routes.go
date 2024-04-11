@@ -2,8 +2,8 @@ package Routes
 
 import (
 	C "logins/Controllers"
-	L "logins/Login"
 	M "logins/Middleware"
+	L "logins/UserLogin"
 
 	"github.com/gin-gonic/gin"
 )
