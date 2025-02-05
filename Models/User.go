@@ -17,6 +17,32 @@ func GetAllUsers(users *[]User) (err error) {
 	return nil
 }
 
+// GetAllUsers Fetch all User data
+func GetBranchAll(branchno string) ([]Branch, error) {
+	db := Db.Init()
+	var branches []Branch
+	// ใช้ Rows() เพื่อดึงข้อมูลทั้งหมดโดยตรง
+	query := "SELECT branchno, branchname FROM psbranch WHERE branchno = ?"
+	rows, err := db.Raw(query, branchno).Rows()
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close() // ปิด rows หลังใช้เสร็จ
+
+	// อ่านค่าจาก rows ทีละแถว
+	for rows.Next() {
+		var branch Branch
+		err = rows.Scan(&branch.BranchNo, &branch.BranchName) // Scan ค่าแต่ละ Column
+		if err != nil {
+			return nil, err
+		}
+		// fmt.Printf("Branch No: %s, Name: %s\n", branchNo, branchName)
+		branches = append(branches, branch)
+	}
+
+	return branches, nil
+}
+
 // CreateUser ... Insert New data
 func CreateUser(users *User) (err error) {
 	db := Db.Init()

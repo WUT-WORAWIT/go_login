@@ -45,9 +45,9 @@ func Login(c *gin.Context) {
 
 	// สร้าง JWT (JSON Web Token) ด้วยข้อมูลผู้ใช้และกำหนดเวลาหมดอายุ
 	claims := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.StandardClaims{
-		Issuer: user.Username, // ระบุผู้ออก token ให้เป็นชื่อผู้ใช้
-		// ExpiresAt: time.Now().Add(time.Hour * 24).Unix(), // กำหนดเวลาหมดอายุให้กับ token เป็น 1 วัน
-		ExpiresAt: time.Now().Add(time.Minute).Unix(), // กำหนด ExpiresAt ให้มีค่าเป็นหลังจากปัจจุบัน 1 นาที
+		Issuer:    user.Username,                         // ระบุผู้ออก token ให้เป็นชื่อผู้ใช้
+		ExpiresAt: time.Now().Add(time.Hour * 24).Unix(), // กำหนดเวลาหมดอายุให้กับ token เป็น 1 วัน
+		// ExpiresAt: time.Now().Add(time.Minute).Unix(), // กำหนด ExpiresAt ให้มีค่าเป็นหลังจากปัจจุบัน 1 นาที
 	})
 
 	// ลงชื่อเซ็นต์กับคีย์เรื่องรหัสลับเพื่อสร้าง token

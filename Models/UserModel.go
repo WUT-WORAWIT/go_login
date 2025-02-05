@@ -10,6 +10,10 @@ type User struct {
 	Phone_number  string
 	Date_of_birth string
 }
+type Branch struct {
+	BranchNo   string `json:"branchno"`
+	BranchName string `json:"branchname"`
+}
 type UserJson struct {
 	Username string `json:"username"`
 	Password string `json:"password"`

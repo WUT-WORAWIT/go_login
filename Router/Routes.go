@@ -16,6 +16,7 @@ func SetupRouter() *gin.Engine {
 	grppost := r.Group("/user-api")
 	{
 		grppost.GET("/", C.GetRemark)
+		grppost.GET("getbranch", C.GetBranch)
 		grppost.POST("creatuser", C.CreateUser)
 		grppost.POST("login", L.Login)
 	}

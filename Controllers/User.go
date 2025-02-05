@@ -64,6 +64,17 @@ func GetUsersAll(c *gin.Context) {
 	}
 }
 
+// GetUsers ... Get all users
+func GetBranch(c *gin.Context) {
+	branchno := c.Query("branchno")
+	branches, err := Models.GetBranchAll(branchno)
+	if err != nil {
+		c.AbortWithStatus(http.StatusNotFound)
+	} else {
+		c.JSON(http.StatusOK, branches)
+	}
+}
+
 // CreateUser ... Create User
 func CreateUser(c *gin.Context) {
 	var user Models.User

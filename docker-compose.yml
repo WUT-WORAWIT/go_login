@@ -1,0 +1,33 @@
+version: '3.8'
+services:
+  # postgres:
+  #   container_name: postgres
+  #   image: postgres:14.1-alpine
+  #   restart: always
+  #   ports:
+  #     - 5432:5432  # ใช้ port เดิม
+  #   environment:
+  #      - POSTGRES_HOST:192.168.1.100
+  #      - POSTGRES_DB=TEST
+  #      - POSTGRES_USER=postgres
+  #      - POSTGRES_PASSWORD:123456
+  #   volumes:
+  #     - "C:/AppServ/PostgreSQL/data:/var/lib/postgresql/data"
+  api:
+    build: .
+    container_name: go-api-container
+    ports:
+      - "8080:8080"  # Map host port 8080 to container port 8080
+    # environment:
+    #   #  POSTGRES_URI: "postgresql://postgres:123456@postgres:5432/TEST"
+    #     # POSTGRES_URI: "postgresql://postgres:123456@postgres:5432/TEST"
+    #      DSN: "host=192.168.1.248 user=sa password=psmadmins dbname=PSPL port=5432 sslmode=disable TimeZone=Asia/Bangkok"
+    # depends_on:
+    #   - postgres
+    networks:
+      - app-network
+    restart: always
+
+networks:
+  app-network:  # Define custom network
+    driver: bridge
