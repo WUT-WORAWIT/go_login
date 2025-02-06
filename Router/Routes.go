@@ -3,7 +3,8 @@ package Routes
 import (
 	C "logins/Controllers"
 	M "logins/Middleware"
-	L "logins/UserLogin"
+
+	// L "logins/UserLogin"
 
 	"github.com/gin-gonic/gin"
 )
@@ -18,7 +19,7 @@ func SetupRouter() *gin.Engine {
 		grppost.GET("/", C.GetRemark)
 		grppost.GET("getbranch", C.GetBranch)
 		grppost.POST("creatuser", C.CreateUser)
-		grppost.POST("login", L.Login)
+		// grppost.POST("login", L.Login)
 	}
 
 	// Group for endpoints with JWT middleware

@@ -2,13 +2,21 @@ version: '3.8'
 services:
   api:
     build: .
-    container_name: go-api-container
+    container_name: user-container
     ports:
       - "8080:8080"  
     networks:
       - app-network
     restart: always
-
+  sell:
+    build: 
+      context: .
+      dockerfile: ./src/sell/Dockerfile  # ชี้ไปที่ Dockerfile ของ sell
+    container_name: sell-container
+    ports:
+      - "8001:8080"
+    networks:
+      - app-network
 networks:
   app-network:  # Define custom network
     driver: bridge
