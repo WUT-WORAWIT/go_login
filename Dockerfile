@@ -1,26 +1,31 @@
-# เลือก base image สำหรับการเริ่มต้น
-FROM golang:1.24.3
+# Build stage
+FROM golang:1.24.3-alpine AS builder
 
-# ติดตั้ง PostgreSQL
-# RUN apt-get update && apt-get install -y postgresql postgresql-contrib
-
-# กำหนด working directory
 WORKDIR /app
 
-# คัดลอกไฟล์ go.mod และ go.sum สำหรับโปรเจ็กต์
+# Copy dependencies first
 COPY go.mod go.sum ./
-
-# ดาวน์โหลดและติดตั้ง dependencies
 RUN go mod download
 
-# คัดลอกโค้ดทั้งหมดไปยัง working directory
+# Copy source code
 COPY . .
 
-# Compile แอปพลิเคชัน
-RUN go build -o main .
+# Build the application
+RUN CGO_ENABLED=0 GOOS=linux go build -o main ./cmd/main.go
 
-# กำหนด port ที่แอปพลิเคชันจะใช้
+# Final stage
+FROM alpine:latest
+
+WORKDIR /app
+
+# Copy the binary from builder
+COPY --from=builder /app/main .
+COPY --from=builder /app/.env .
+
+# Create non-root user
+RUN adduser -D appuser
+USER appuser
+
 EXPOSE 8080
 
-# กำหนดคำสั่งที่จะใช้เมื่อ container ถูกเริ่มต้น
 CMD ["./main"]
