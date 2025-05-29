@@ -55,12 +55,25 @@ func GetRemark(c *gin.Context) {
 
 // GetUsers ... Get all users
 func GetUsersAll(c *gin.Context) {
-	var user []models.User
-	err := models.GetAllUsers(&user)
-	if err != nil {
-		c.AbortWithStatus(http.StatusNotFound)
-	} else {
-		c.JSON(http.StatusOK, user)
+	resultChan := make(chan []models.User)
+	errChan := make(chan error)
+
+	go func() {
+		var users []models.User
+		err := models.GetAllUsers(&users) // Pass pointer to users slice
+		if err != nil {
+			errChan <- err
+			return
+		}
+		resultChan <- users
+	}()
+
+	// Wait for result
+	select {
+	case users := <-resultChan:
+		c.JSON(http.StatusOK, users)
+	case err := <-errChan:
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 	}
 }
 
