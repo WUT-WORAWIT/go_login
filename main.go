@@ -1,7 +1,7 @@
 package main
 
 import (
-	R "logins/Router"
+	R "go_login/Router"
 )
 
 func main() {

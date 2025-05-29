@@ -2,8 +2,8 @@ package Controllers
 
 import (
 	"fmt"
-	M "logins/Middleware"
-	"logins/Models"
+	M "go_login/Middleware"
+	"go_login/Models"
 	"net/http"
 
 	"github.com/gin-gonic/gin"

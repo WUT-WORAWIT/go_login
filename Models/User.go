@@ -2,7 +2,7 @@ package Models
 
 import (
 	"fmt"
-	Db "logins/Database"
+	Db "go_login/Database"
 	"net/http"
 
 	"github.com/gin-gonic/gin"

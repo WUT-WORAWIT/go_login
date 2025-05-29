@@ -1,4 +1,4 @@
-module logins
+module go_login
 
 go 1.21.1
 

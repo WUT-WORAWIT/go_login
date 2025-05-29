@@ -1,7 +1,7 @@
 package UserLogin
 
 import (
-	"logins/Models"
+	"go_login/Models" // แก้ไขตามชื่อ module ที่กำหนดใน go.mod
 	"net/http"
 	"time"
 

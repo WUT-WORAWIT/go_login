@@ -1,8 +1,8 @@
 package Routes
 
 import (
-	C "logins/Controllers"
-	M "logins/Middleware"
+	C "go_login/Controllers"
+	M "go_login/Middleware"
 
 	// L "logins/UserLogin"
 

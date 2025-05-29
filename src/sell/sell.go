@@ -1,7 +1,7 @@
 package main
 
 import (
-	L "logins/UserLogin"
+	L "go_login/UserLogin"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
