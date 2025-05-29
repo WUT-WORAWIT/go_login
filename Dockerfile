@@ -18,9 +18,8 @@ FROM alpine:latest
 
 WORKDIR /app
 
-# Copy the binary from builder
+# Copy only the binary from builder
 COPY --from=builder /app/main .
-COPY --from=builder /app/.env .
 
 # Create non-root user
 RUN adduser -D appuser
