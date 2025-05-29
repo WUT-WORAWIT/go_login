@@ -1,10 +1,8 @@
 package routes
 
 import (
-	C "go_login/internal/handlers"
-	M "go_login/internal/middleware"
-
-	// L "logins/UserLogin"
+	"go_login/internal/handlers"
+	"go_login/internal/middleware"
 
 	"github.com/gin-gonic/gin"
 )
@@ -13,23 +11,24 @@ import (
 func SetupRouter() *gin.Engine {
 	r := gin.Default()
 
-	// Group for endpoints without JWT middleware
-	grppost := r.Group("/user-api")
+	// Public routes
+	public := r.Group("/api")
 	{
-		grppost.GET("/", C.GetRemark)
-		grppost.GET("getbranch", C.GetBranch)
-		grppost.POST("creatuser", C.CreateUser)
-		// grppost.POST("login", L.Login)
+		public.GET("/", handlers.GetRemark)
+		public.GET("/branches", handlers.GetBranch)
+		public.POST("/users", handlers.CreateUser)
+		public.POST("/login", handlers.Login)
 	}
 
-	// Group for endpoints with JWT middleware
-	grpget := r.Group("/user-api")
-	grpget.Use(M.JWTMiddleware()) // Applying JWT middleware
+	// Protected routes
+	protected := r.Group("/api")
+	protected.Use(middleware.JWTMiddleware())
 	{
-		grpget.GET("getuserall", C.GetUsersAll)
-		grpget.GET("getuserbyid", C.GetUserByID)
-		grpget.PUT("updateuser", C.UpdateUser)
-		grpget.DELETE("deleteuser", C.DeleteUser)
+		protected.GET("/users", handlers.GetUsersAll)
+		protected.GET("/users/:id", handlers.GetUserByID)
+		protected.PUT("/users/:id", handlers.UpdateUser)
+		protected.DELETE("/users/:id", handlers.DeleteUser)
 	}
+
 	return r
 }
