@@ -1,5 +1,5 @@
 # เลือก base image สำหรับการเริ่มต้น
-FROM golang:1.21.1
+FROM golang:1.24.3
 
 # ติดตั้ง PostgreSQL
 # RUN apt-get update && apt-get install -y postgresql postgresql-contrib
