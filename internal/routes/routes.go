@@ -15,6 +15,7 @@ func SetupRouter() *gin.Engine {
 	public := r.Group("/api")
 	{
 		public.GET("/", handlers.GetRemark)
+		public.GET("/itwork", handlers.GetItWork)
 		public.GET("/branches", handlers.GetBranch)
 		public.POST("/users", handlers.CreateUser)
 		public.POST("/login", handlers.Login)

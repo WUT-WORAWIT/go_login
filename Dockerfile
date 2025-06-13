@@ -18,8 +18,12 @@ FROM alpine:latest
 
 WORKDIR /app
 
+# ติดตั้ง tzdata เพื่อรองรับ timezone
+RUN apk add --no-cache tzdata
+
 # Copy only the binary from builder
 COPY --from=builder /app/main .
+COPY .env ./
 
 # Create non-root user
 RUN adduser -D appuser

@@ -14,7 +14,7 @@ import (
 func GetRemark(c *gin.Context) {
 	str := `
 	func: CreateUser
-	POST(http://localhost:8080/user-api/creatuser)
+	POST(http://localhost:8080/api/creatuser)
 	Body -> JSON
 	{
 		"Username": "worawit",
@@ -29,18 +29,18 @@ func GetRemark(c *gin.Context) {
 	 
 	-----------------------------------------------
 	func: GetUsers
-	GET(http://localhost:8080/user-api/getuserall)
+	GET(http://localhost:8080/api/getuserall)
 	paramiter:
 
 	-----------------------------------------------
 	func: GetUserByID
-	GET(http://localhost:8080/user-api/getuserbyid?id=1)
+	GET(http://localhost:8080/api/getuserbyid?id=1)
 	paramiter:
 	Username=
 
 	-----------------------------------------------
 	func: UpdateUser
-	http://localhost:8080/user-api/updateuser?id=2
+	http://localhost:8080/api/updateuser?id=2
 	Body -> JSON
 	 {
 	 	"ID": 2,
